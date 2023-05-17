@@ -1,26 +1,26 @@
-const express = require("express")
-const cors = require("cors")
-const morgan = require("morgan")
-const mongoose = require("mongoose")
-const dotenv = require("dotenv/config")
+import express, { json } from "express"
+import cors from "cors"
+import morgan from "morgan"
+import { set, connect } from "mongoose"
+import userRouter from "./src/routes/api/user.js"
+import connectDB from "./src/config/db.js"
+import dotenv from "dotenv"
+dotenv.config()
+connectDB()
 
 const app = express()
 
-app.use(express.json({ extended: false }))
+app.use(json({ extended: false }))
 app.use(cors("*"))
 app.use(morgan('tiny'))
 app.get('/', (req, res) => {
   res.send("API is running")
 })
 
-app.use('/api/users', require('./routes/api/user'))
+app.use('/api/users', userRouter)
 
 const PORT = process.env.PORT || 8564
 
 app.listen(PORT, (req, res) => {
-  mongoose.set('strictQuery', true);
-  mongoose.connect(process.env.MONGODB_URL)
-    .then(() => { console.log('Connected to database'); })
-    .catch((err) => console.log(err));
   console.log(`Listening on port: ${PORT}`)
 })
