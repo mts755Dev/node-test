@@ -1,6 +1,8 @@
-import { Router } from 'express'
-const userRouter = Router()
+import express from 'express'
 import UserModel from '../../models/User.js'
+
+const userRouter = express.Router()
+
 userRouter.get('/', async (req, res) => {
   try {
     let users = await UserModel.find()
