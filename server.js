@@ -1,10 +1,10 @@
 import express, { json } from "express"
 import cors from "cors"
 import morgan from "morgan"
-import { set, connect } from "mongoose"
 import userRouter from "./src/routes/api/user.js"
 import connectDB from "./src/config/db.js"
 import dotenv from "dotenv"
+import bookRouter from "./src/routes/api/book.js"
 dotenv.config()
 connectDB()
 
@@ -18,6 +18,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/users', userRouter)
+app.use('/api/books', bookRouter)
 
 const PORT = process.env.PORT || 8564
 
