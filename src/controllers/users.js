@@ -1,4 +1,5 @@
 import UserModel from "../models/User.js"
+import jwt from "jsonwebtoken"
 
 export const getUsers = async (req, res) => {
   try {
@@ -78,7 +79,12 @@ export const deleteUser = async (req, res) => {
 
 export const handleLogin = async (req, res) => {
   try {
-    return req.isPasswordValid ? res.status(200).json({ mssage: "logged in successfully" }) : res.status(404).json({ errors: [{ message: 'Invalid Credentials' }] })
+    const token = jwt.sign(
+      { email: req.body.email },
+      process.env.SECRET_KEY,
+      { expiresIn: '1d' },
+    );
+    return req.isPasswordValid ? res.status(200).json({ message: "logged in successfully", token: `Bearer ${token}` }) : res.status(404).json({ errors: [{ message: 'Invalid Credentials' }] })
   } catch (error) {
     console.error(error.message);
     res.status(500).json('Server Error: ' + error.message);
