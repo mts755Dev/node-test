@@ -84,7 +84,7 @@ export const handleLogin = async (req, res) => {
       process.env.SECRET_KEY,
       { expiresIn: '1d' },
     );
-    return req.isPasswordValid ? res.status(200).json({ message: "logged in successfully", token: `Bearer ${token}` }) : res.status(404).json({ errors: [{ message: 'Invalid Credentials' }] })
+    return req.isPasswordValid ? res.status(200).json({ message: "logged in successfully", token: token }) : res.status(404).json({ errors: [{ message: 'Invalid Credentials' }] })
   } catch (error) {
     console.error(error.message);
     res.status(500).json('Server Error: ' + error.message);
