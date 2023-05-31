@@ -24,11 +24,8 @@ const UserSchema = new Schema(
 UserSchema.pre('save', async function (next) {
   if (!this.isModified("password")) return next();
 
-  const saltRound = process.env.SALT
-  const password = this.password
-
-  const salt = await bcrypt.genSalt(saltRound)
-  const hash = await bcrypt.hash(password, salt)
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(this.password, salt);
 
   this.password = hash
   next()
